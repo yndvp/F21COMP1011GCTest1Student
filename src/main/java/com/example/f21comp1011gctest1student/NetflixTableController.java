@@ -59,8 +59,8 @@ public class NetflixTableController implements Initializable {
 
         tableView.getItems().addAll(DBUtility.getNetflixShow());
 
-//        movieCheckBox.setSelected(true);
-//        tvCheckBox.setSelected(true);
+        movieCheckBox.setSelected(true);
+        tvCheckBox.setSelected(true);
 
         selectRatingComboBox.getItems().addAll(DBUtility.getSortedRatings());
 
