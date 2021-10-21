@@ -36,10 +36,12 @@ public class NetflixShow {
     }
 
     public void setType(String type) {
-        if (type == "Movie" || type == "TV Show")
+        List<String> validTypes = Arrays.asList("Movie", "TV Show");
+        if (validTypes.contains(type))
             this.type = type;
         else
-            throw new IllegalArgumentException("The type should be one of the following String’s “Movie” or “TV Show”");
+            throw new IllegalArgumentException(String.format("%s is invalid, choose from %s",type,
+                    validTypes));
     }
 
     public String getTitle() {
