@@ -1,5 +1,7 @@
 package com.example.f21comp1011gctest1student;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,6 +44,7 @@ public class NetflixTableController implements Initializable {
 
     @FXML
     private ComboBox<String> selectRatingComboBox;
+    ObservableList<String> ratings = FXCollections.observableArrayList("PG-13","R","TV-14","TV-G","TV-MA","TV-Y","TV-Y7");
 
     @FXML
     private Label numOfShowsLabel;
@@ -70,5 +73,19 @@ public class NetflixTableController implements Initializable {
 
     @FXML
     void applyFilter(ActionEvent event)  {
+//        if(movieCheckBox.isSelected() && tvCheckBox.isSelected()) {
+//            tableView.getItems().addAll(DBUtility.getNetflixShow());
+//        }
+        if(movieCheckBox.isSelected())
+        {
+            tableView.getItems().addAll(DBUtility.showMovies());
+        }
+//        else if(tvCheckBox.isSelected())
+//        {
+//            tableView.getItems().addAll(DBUtility.showTVs());
+//        }
+        else {
+            tableView.getItems().clear();
+        }
     }
 }

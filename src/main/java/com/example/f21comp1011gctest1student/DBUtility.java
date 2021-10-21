@@ -76,4 +76,74 @@ public class DBUtility {
 
         return sortedRatings;
     }
+
+    public static ArrayList<NetflixShow> showMovies()
+    {
+        ArrayList<NetflixShow> netflixShows = new ArrayList<>();
+
+        String sql = "SELECT showId, type, title, rating, director, cast\n" +
+                "FROM netflix\n" +
+                "WHERE type = 'movie'";
+
+        try(
+                Connection conn = DriverManager.getConnection(connectUrl, user, pw);
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+        )
+        {
+
+            while(resultSet.next())
+            {
+                String showId = resultSet.getString("showId");
+                String type = resultSet.getString("type");
+                String title = resultSet.getString("title");
+                String rating = resultSet.getString("rating");
+                String director = resultSet.getString("director");
+                String cast = resultSet.getString("cast");
+
+                NetflixShow netflixShow = new NetflixShow(showId, type, title, rating, director, cast);
+                netflixShows.add(netflixShow);
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return netflixShows;
+    }
+
+    public static ArrayList<NetflixShow> showTVs()
+    {
+        ArrayList<NetflixShow> netflixShows = new ArrayList<>();
+
+        String sql = "SELECT showId, type, title, rating, director, cast\n" +
+                "FROM netflix\n" +
+                "WHERE type = 'TV Show'";
+
+        try(
+                Connection conn = DriverManager.getConnection(connectUrl, user, pw);
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+        )
+        {
+
+            while(resultSet.next())
+            {
+                String showId = resultSet.getString("showId");
+                String type = resultSet.getString("type");
+                String title = resultSet.getString("title");
+                String rating = resultSet.getString("rating");
+                String director = resultSet.getString("director");
+                String cast = resultSet.getString("cast");
+
+                NetflixShow netflixShow = new NetflixShow(showId, type, title, rating, director, cast);
+                netflixShows.add(netflixShow);
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return netflixShows;
+    }
 }
