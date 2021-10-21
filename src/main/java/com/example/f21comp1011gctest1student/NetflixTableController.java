@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class NetflixTableController implements Initializable {
@@ -60,7 +62,9 @@ public class NetflixTableController implements Initializable {
         movieCheckBox.setSelected(true);
         tvCheckBox.setSelected(true);
 
-        numOfShowsLabel.setText("Number of movies /shows: " + tableView.getItems().size());
+        selectRatingComboBox.getItems().addAll(DBUtility.getSortedRatings());
+
+        numOfShowsLabel.setText("Number of movies/shows: " + tableView.getItems().size());
 
     }
 

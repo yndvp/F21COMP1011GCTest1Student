@@ -10,13 +10,15 @@ public class DBUtility {
     private static String user = "student";
     private static String pw = "student";
     private static String connectUrl = "jdbc:mysql://localhost:3306/javaTest";
-    public int count;
 
     public static ArrayList<NetflixShow> getNetflixShow()
     {
         ArrayList<NetflixShow> netflixShows = new ArrayList<>();
 
         String sql = "SELECT showId, type, title, rating, director, cast\n" +
+                "FROM netflix";
+
+        String sql2 = "SELECT distinct rating as 'sortedRatings'\n" +
                 "FROM netflix";
 
         try(
@@ -37,11 +39,41 @@ public class DBUtility {
                 NetflixShow netflixShow = new NetflixShow(showId, type, title, rating, director, cast);
                 netflixShows.add(netflixShow);
             }
+
+//            }
         }catch (Exception e)
         {
             e.printStackTrace();
         }
 
         return netflixShows;
+    }
+
+    public static ArrayList<String> getSortedRatings()
+    {
+        ArrayList<String> sortedRatings = new ArrayList<>();
+
+        String sql = "SELECT distinct rating as 'sortedRatings'\n" +
+                "FROM netflix";
+
+        try(
+                Connection conn = DriverManager.getConnection(connectUrl, user, pw);
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+        )
+        {
+
+            while(resultSet.next())
+            {
+                String rating = resultSet.getString("sortedRatings");
+
+                sortedRatings.add(rating);
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return sortedRatings;
     }
 }
