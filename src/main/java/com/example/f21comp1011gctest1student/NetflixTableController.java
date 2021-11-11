@@ -44,13 +44,14 @@ public class NetflixTableController implements Initializable {
 
     @FXML
     private ComboBox<String> selectRatingComboBox;
-    ObservableList<String> ratings = FXCollections.observableArrayList("PG-13","R","TV-14","TV-G","TV-MA","TV-Y","TV-Y7");
 
     @FXML
     private Label numOfShowsLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        String str = "(\"PG-13\",\"R\",\"TV-14\",\"TV-G\",\"TV-MA\",\"TV-Y\",\"TV-Y7\")";
+
         selectRatingComboBox.getItems().add("All ratings");
 
         showIdCol.setCellValueFactory(new PropertyValueFactory<>("showId"));
@@ -60,32 +61,66 @@ public class NetflixTableController implements Initializable {
         directorCol.setCellValueFactory(new PropertyValueFactory<>("director"));
         castCol.setCellValueFactory(new PropertyValueFactory<>("cast"));
 
-        tableView.getItems().addAll(DBUtility.getNetflixShow());
+        tableView.getItems().addAll(DBUtility.getNetflixShow(str));
 
         movieCheckBox.setSelected(true);
         tvCheckBox.setSelected(true);
 
+        numOfShowsLabel.setText("Number of movies/shows: " + tableView.getItems().size());
+
         selectRatingComboBox.getItems().addAll(DBUtility.getSortedRatings());
 
-        numOfShowsLabel.setText("Number of movies / shows: " + tableView.getItems().size());
 
     }
 
     @FXML
     void applyFilter(ActionEvent event)  {
-        if(movieCheckBox.isSelected() && tvCheckBox.isSelected()) {
-            tableView.getItems().addAll(DBUtility.getNetflixShow());
+        String str = "(\"PG-13\",\"R\",\"TV-14\",\"TV-G\",\"TV-MA\",\"TV-Y\",\"TV-Y7\")";
+        String selectedItem = selectRatingComboBox.getSelectionModel().getSelectedItem();
+        String selectedItemStr = "(\"" + selectRatingComboBox.getSelectionModel().getSelectedItem() + "\")";
+
+        tableView.getItems().clear();
+
+        if(selectedItem != null) {
+            if(selectedItem != "All ratings"){
+                if(movieCheckBox.isSelected() && tvCheckBox.isSelected()) {
+                    tableView.getItems().addAll(DBUtility.getNetflixShow(selectedItemStr));
+                }
+                else if(movieCheckBox.isSelected())
+                {
+                    tableView.getItems().addAll(DBUtility.showMovies(selectedItemStr));
+                }
+                else if(tvCheckBox.isSelected())
+                {
+                    tableView.getItems().addAll(DBUtility.showTVs(selectedItemStr));
+                }
+            } else {
+                if(movieCheckBox.isSelected() && tvCheckBox.isSelected()) {
+                    tableView.getItems().addAll(DBUtility.getNetflixShow(str));
+                }
+                else if(movieCheckBox.isSelected())
+                {
+                    tableView.getItems().addAll(DBUtility.showMovies(str));
+                }
+                else if(tvCheckBox.isSelected())
+                {
+                    tableView.getItems().addAll(DBUtility.showTVs(str));
+                }
+            }
+        } else {
+            if(movieCheckBox.isSelected() && tvCheckBox.isSelected()) {
+                tableView.getItems().addAll(DBUtility.getNetflixShow(str));
+            }
+            else if(movieCheckBox.isSelected())
+            {
+                tableView.getItems().addAll(DBUtility.showMovies(str));
+            }
+            else if(tvCheckBox.isSelected())
+            {
+                tableView.getItems().addAll(DBUtility.showTVs(str));
+            }
         }
-        else if(movieCheckBox.isSelected())
-        {
-            tableView.getItems().addAll(DBUtility.showMovies());
-        }
-        else if(tvCheckBox.isSelected())
-        {
-            tableView.getItems().addAll(DBUtility.showTVs());
-        }
-        else {
-            tableView.getItems().clear();
-        }
+
+        numOfShowsLabel.setText("Number of movies/shows: " + tableView.getItems().size());
     }
 }

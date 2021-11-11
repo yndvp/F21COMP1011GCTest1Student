@@ -11,15 +11,13 @@ public class DBUtility {
     private static String pw = "student";
     private static String connectUrl = "jdbc:mysql://localhost:3306/javaTest";
 
-    public static ArrayList<NetflixShow> getNetflixShow()
+    public static ArrayList<NetflixShow> getNetflixShow(String str)
     {
         ArrayList<NetflixShow> netflixShows = new ArrayList<>();
 
         String sql = "SELECT showId, type, title, rating, director, cast\n" +
-                "FROM netflix";
-
-        String sql2 = "SELECT distinct rating as 'sortedRatings'\n" +
-                "FROM netflix";
+                "FROM netflix\n" +
+                "WHERE rating IN" + str;
 
         try(
                 Connection conn = DriverManager.getConnection(connectUrl, user, pw);
@@ -45,7 +43,6 @@ public class DBUtility {
         {
             e.printStackTrace();
         }
-
         return netflixShows;
     }
 
@@ -53,8 +50,9 @@ public class DBUtility {
     {
         ArrayList<String> sortedRatings = new ArrayList<>();
 
-        String sql = "SELECT distinct rating as 'sortedRatings'\n" +
-                "FROM netflix";
+        String sql = "SELECT DISTINCT rating as 'sortedRatings'\n" +
+                "FROM netflix\n" +
+                "ORDER BY rating";
 
         try(
                 Connection conn = DriverManager.getConnection(connectUrl, user, pw);
@@ -77,13 +75,13 @@ public class DBUtility {
         return sortedRatings;
     }
 
-    public static ArrayList<NetflixShow> showMovies()
+    public static ArrayList<NetflixShow> showMovies(String str)
     {
         ArrayList<NetflixShow> netflixShows = new ArrayList<>();
 
         String sql = "SELECT showId, type, title, rating, director, cast\n" +
                 "FROM netflix\n" +
-                "WHERE type = 'movie'";
+                "WHERE type = 'movie' and rating IN" + str;
 
         try(
                 Connection conn = DriverManager.getConnection(connectUrl, user, pw);
@@ -112,13 +110,13 @@ public class DBUtility {
         return netflixShows;
     }
 
-    public static ArrayList<NetflixShow> showTVs()
+    public static ArrayList<NetflixShow> showTVs(String str)
     {
         ArrayList<NetflixShow> netflixShows = new ArrayList<>();
 
         String sql = "SELECT showId, type, title, rating, director, cast\n" +
                 "FROM netflix\n" +
-                "WHERE type = 'TV Show'";
+                "WHERE type = 'TV Show' and rating IN" + str;
 
         try(
                 Connection conn = DriverManager.getConnection(connectUrl, user, pw);
